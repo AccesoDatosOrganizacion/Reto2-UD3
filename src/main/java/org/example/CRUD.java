@@ -60,10 +60,37 @@ public class CRUD {
         try {
             Team ferrari = new Team("Ferrari", "Italia");
             Team redbull = new Team("Red Bull", "Austria");
+            Team mercedes = new Team("Mercedes", "Alemania");
+            Team astonmartin = new Team("Aston Martin", "Reino Unido");
+            Team alpine = new Team("Alpine", "Francia");
+            Team mclaren = new Team("MClaren", "Reino Unido");
+            Team williams = new Team("Williams", "Reino Unido");
+            Team racingbulls = new Team("Racing Bulls", "Italia");
+            Team haas = new Team("Haas", "Estados Unidos");
+            Team kicksauber = new Team("Kick Sauber", "Suiza");
+
 
             Driver leclerc = new Driver("Charles Leclerc", 16, "Monaco");
             Driver sainz = new Driver("Carlos Sainz", 55, "España");
             Driver verstappen = new Driver("Max Verstappen", 1, "Países Bajos");
+            Driver russel = new Driver("George Russell", 63, "Reino Unido");
+            Driver piastri = new Driver("Oscar Piastri", 81, "Australia");
+            Driver norris = new Driver("Lando Norris", 4, "Reino Unido");
+            Driver bearman = new Driver("Oliver Bearman", 87, "Países Bajos");
+            Driver hamilton = new Driver("Lewis Hamilton", 44, "Reino Unido");
+            Driver albon = new Driver("Alex Albon", 23, "Tailandia");
+            Driver alonso = new Driver("Fernando Alonso", 14, "España");
+            Driver ocon = new Driver("Esteban Ocon", 31, "Francia");
+            Driver hulkenberg = new Driver("Nico Hulkenberg", 27, "Alemania");
+            Driver stroll = new Driver("Lance Stroll", 18, "Canada");
+            Driver bortoleto = new Driver("Gabriel Bortoleto", 5, "Brasil");
+            Driver tsunoda = new Driver("Yuki Tsunoda", 22, "Japon");
+            Driver antoneli = new Driver("Andrea Kimi Antonelli", 12, "Italia");
+            Driver hadjar = new Driver("Isack Hadjar", 6, "Francia");
+            Driver gasly = new Driver("Pierre Gasly", 10, "Francia");
+            Driver colapinto = new Driver("Franco Colapinto", 43, "Argentina");
+            Driver lawson = new Driver("Liam Lawson", 30, "Australia");
+
 
             leclerc.setTeam(ferrari);
             sainz.setTeam(ferrari);
