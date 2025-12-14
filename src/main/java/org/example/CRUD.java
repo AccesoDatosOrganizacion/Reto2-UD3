@@ -1,4 +1,4 @@
-package org.example;
+package defecto;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -21,7 +21,8 @@ public class CRUD {
                 System.out.println("2. READ - Mostrar equipos, pilotos y carreras");
                 System.out.println("3. UPDATE - Actualizar piloto");
                 System.out.println("4. DELETE - Eliminar carrera");
-                System.out.println("5. Salir");
+                System.out.println("5. ConsultasJPQL- Consultas");
+                System.out.println("6. Salir....");
                 System.out.print("Selecciona opción: ");
 
                 int opcion = scanner.nextInt();
@@ -32,7 +33,8 @@ public class CRUD {
                     case 2 -> readDatos(em);
                     case 3 -> updateDatos(em, scanner);
                     case 4 -> deleteDatos(em, scanner);
-                    case 5 -> {
+                    case 5 -> consultasJPQL(em,scanner);
+                    case 6 -> {
                         System.out.println("Saliendo...");
                         return;
                     }
@@ -60,37 +62,10 @@ public class CRUD {
         try {
             Team ferrari = new Team("Ferrari", "Italia");
             Team redbull = new Team("Red Bull", "Austria");
-            Team mercedes = new Team("Mercedes", "Alemania");
-            Team astonmartin = new Team("Aston Martin", "Reino Unido");
-            Team alpine = new Team("Alpine", "Francia");
-            Team mclaren = new Team("MClaren", "Reino Unido");
-            Team williams = new Team("Williams", "Reino Unido");
-            Team racingbulls = new Team("Racing Bulls", "Italia");
-            Team haas = new Team("Haas", "Estados Unidos");
-            Team kicksauber = new Team("Kick Sauber", "Suiza");
-
 
             Driver leclerc = new Driver("Charles Leclerc", 16, "Monaco");
             Driver sainz = new Driver("Carlos Sainz", 55, "España");
             Driver verstappen = new Driver("Max Verstappen", 1, "Países Bajos");
-            Driver russel = new Driver("George Russell", 63, "Reino Unido");
-            Driver piastri = new Driver("Oscar Piastri", 81, "Australia");
-            Driver norris = new Driver("Lando Norris", 4, "Reino Unido");
-            Driver bearman = new Driver("Oliver Bearman", 87, "Países Bajos");
-            Driver hamilton = new Driver("Lewis Hamilton", 44, "Reino Unido");
-            Driver albon = new Driver("Alex Albon", 23, "Tailandia");
-            Driver alonso = new Driver("Fernando Alonso", 14, "España");
-            Driver ocon = new Driver("Esteban Ocon", 31, "Francia");
-            Driver hulkenberg = new Driver("Nico Hulkenberg", 27, "Alemania");
-            Driver stroll = new Driver("Lance Stroll", 18, "Canada");
-            Driver bortoleto = new Driver("Gabriel Bortoleto", 5, "Brasil");
-            Driver tsunoda = new Driver("Yuki Tsunoda", 22, "Japon");
-            Driver antoneli = new Driver("Andrea Kimi Antonelli", 12, "Italia");
-            Driver hadjar = new Driver("Isack Hadjar", 6, "Francia");
-            Driver gasly = new Driver("Pierre Gasly", 10, "Francia");
-            Driver colapinto = new Driver("Franco Colapinto", 43, "Argentina");
-            Driver lawson = new Driver("Liam Lawson", 30, "Australia");
-
 
             leclerc.setTeam(ferrari);
             sainz.setTeam(ferrari);
@@ -208,4 +183,84 @@ public class CRUD {
             System.out.println("Error eliminando carrera: " + e.getMessage());
         }
     }
+
+    private static void consultasJPQL(EntityManager em, Scanner sc) {
+
+        System.out.println("\n--- CONSULTAS JPQL ---");
+        System.out.println("1. Listado parcial (nombre y número)");
+        System.out.println("2. Pilotos por escudería");
+        System.out.println("3. Pilotos ordenados por número");
+        System.out.println("4. Búsqueda aproximada por nombre");
+        System.out.println("5. Pilotos en rango de número");
+        System.out.println("6. Funciones agregadas");
+        System.out.println("7. Join pilotos-carreras");
+        System.out.print("Opción: ");
+
+        int op = sc.nextInt();
+        sc.nextLine();
+
+        switch (op) {
+
+            case 1 -> {
+                List<Object[]> res = em.createQuery(
+                        "SELECT d.name, d.raceNumber FROM Driver d",
+                        Object[].class).getResultList();
+                res.forEach(r -> System.out.println(r[0] + " -> #" + r[1]));
+            }
+
+            case 2 -> {
+                System.out.print("Equipo: ");
+                String team = sc.nextLine();
+                em.createQuery(
+                                "SELECT d FROM Driver d WHERE d.team.name = :t",
+                                Driver.class)
+                        .setParameter("t", team)
+                        .getResultList()
+                        .forEach(System.out::println);
+            }
+
+            case 3 -> em.createQuery(
+                            "SELECT d FROM Driver d ORDER BY d.raceNumber",
+                            Driver.class)
+                    .getResultList()
+                    .forEach(System.out::println);
+
+            case 4 -> {
+                System.out.print("Texto: ");
+                String txt = sc.nextLine();
+                em.createQuery(
+                                "SELECT d FROM Driver d WHERE d.name LIKE :n",
+                                Driver.class)
+                        .setParameter("n", "%" + txt + "%")
+                        .getResultList()
+                        .forEach(System.out::println);
+            }
+
+            case 5 -> em.createQuery(
+                            "SELECT d FROM Driver d WHERE d.raceNumber BETWEEN 10 AND 50",
+                            Driver.class)
+                    .getResultList()
+                    .forEach(System.out::println);
+
+            case 6 -> {
+                Long total = em.createQuery(
+                        "SELECT COUNT(d) FROM Driver d",
+                        Long.class).getSingleResult();
+                Double media = em.createQuery(
+                        "SELECT AVG(d.raceNumber) FROM Driver d",
+                        Double.class).getSingleResult();
+                System.out.println("Total pilotos: " + total);
+                System.out.println("Media número: " + media);
+            }
+
+            case 7 -> em.createQuery(
+                            "SELECT DISTINCT d FROM Driver d JOIN d.races r",
+                            Driver.class)
+                    .getResultList()
+                    .forEach(System.out::println);
+
+            default -> System.out.println("Opción no válida");
+        }
+    }
 }
+
