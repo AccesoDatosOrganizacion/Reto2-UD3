@@ -1,4 +1,4 @@
-package org.example;
+package defecto;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
