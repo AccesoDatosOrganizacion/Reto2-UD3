@@ -1,4 +1,4 @@
-package org.example;
+package defecto;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class Team {
         this.name = name;
         this.country = country;
     }
-
+    
 
     public void addDriver(Driver driver) {
         drivers.add(driver);
@@ -64,3 +64,4 @@ public class Team {
         return "Team{id=" + id + ", name='" + name + '\'' + ", country='" + country + '\'' + '}';
     }
 }
+
