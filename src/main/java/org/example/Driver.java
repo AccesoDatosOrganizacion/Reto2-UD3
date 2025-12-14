@@ -1,5 +1,4 @@
-package org.example;
-
+package defecto;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
